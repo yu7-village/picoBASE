@@ -19,6 +19,25 @@
 
 
 
+<button onclick="blinkLED()" style="padding: 10px 20px; font-size: 16px;">LEDを5回点滅させる</button>
+
+<script>
+function blinkLED() {
+    // Write API Keyを使用してField 3に「1」を書き込む
+    const apiKey = "あなたのWriteAPIKey";
+    const channelID = "3279965";
+    const url = `https://api.thingspeak.com/update?api_key=${apiKey}&field3=1`;
+
+    fetch(url)
+        .then(response => {
+            if (response.ok) {
+                alert("点滅命令を送信しました！");
+            }
+        })
+        .catch(error => console.error('Error:', error));
+}
+</script>
+
  
 </body>
 </html>
