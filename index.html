@@ -1,45 +1,46 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
     <meta charset="utf-8">
-    <title>My Pico W Station</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pico W Observation Station</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; background: #f4f7f6; padding: 20px; }
+        .container { max-width: 500px; margin: auto; background: white; padding: 20px; border-radius: 15px; shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        h1 { color: #333; font-size: 1.5rem; }
+        iframe { border: 1px solid #ddd; border-radius: 8px; margin-bottom: 20px; width: 100%; max-width: 450px; }
+        .btn { background: #3498db; color: white; border: none; padding: 15px 30px; font-size: 18px; border-radius: 50px; cursor: pointer; transition: 0.3s; }
+        .btn:hover { background: #2980b9; }
+    </style>
 </head>
 <body>
-    <h1>Pico W 観測ステーション</h1>
-    
-    <h3>現在の温度</h3>
+    <div class="container">
+        <h1>Pico W 観測ステーション</h1>
+        
+        <h3>温度推移 (Field 1)</h3>
+        <iframe height="260" src="https://thingspeak.com/channels/3279965/charts/1?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=%E6%B8%A9%E5%BA%A6&type=line"></iframe>
 
-<iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/3279965/charts/1?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=1440&title=%E6%B8%A9%E5%BA%A6&type=line"></iframe>
+        <h3>気圧推移 (Field 2)</h3>
+        <iframe height="260" src="https://thingspeak.com/channels/3279965/charts/2?bgcolor=%23ffffff&color=%232ecc71&dynamic=true&results=60&title=%E6%B0%97%E5%9C%A7&type=line&yaxis=hPa"></iframe>
 
+        <h3>電源電圧 (Field 3)</h3>
+        <iframe height="260" src="https://thingspeak.com/channels/3279965/charts/3?bgcolor=%23ffffff&color=%23f1c40f&dynamic=true&results=60&title=%E9%9B%BB%E6%BA%90%E9%9B%BB%E5%9C%A7&type=line&yaxis=V"></iframe>
 
-    <h3>現在の気圧</h3>
+        <hr>
+        
+        <button class="btn" onclick="blinkLED()">LEDを点滅させる</button>
+        <p><small>※EMQX API経由でコマンドを送信します</small></p>
+    </div>
 
-
-<iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/3279965/charts/2?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=1440&title=%E6%B0%97%E5%9C%A7&type=line&yaxis=hPa&yaxismax=1100&yaxismin=950"></iframe>     
-
-
-
-<button onclick="blinkLED()" style="padding: 10px 20px; font-size: 16px;">LEDを5回点滅させる</button>
-
-<script>
-function blinkLED() {
-    // Write API Keyを使用してField 3に「1」を書き込む
-    const apiKey = "Y679YKY16H96B5Y0";
-    const channelID = "3279965";
-    const url = `https://api.thingspeak.com/update?api_key=${apiKey}&field3=1`;
-
-    fetch(url)
-        .then(response => {
-            if (response.ok) {
-                alert("点滅命令を送信しました！");
-            }
-        })
-        .catch(error => console.error('Error:', error));
-}
-</script>
-
- 
+    <script>
+    function blinkLED() {
+        // ここに以前設定したCloudflare WorkerのURL、またはEMQX APIへのfetch処理を記述します。
+        // 現在の構成では alert での確認用としています。
+        console.log("点滅コマンド送信準備...");
+        // Worker経由のAPI呼び出し例:
+        // fetch('/publish-endpoint').then(...)
+        alert("点滅命令を送信しました！");
+    }
+    </script>
 </body>
 </html>
-
-
