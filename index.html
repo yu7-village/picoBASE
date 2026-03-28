@@ -33,14 +33,48 @@
     </div>
 
     <script>
-    function blinkLED() {
-        // ここに以前設定したCloudflare WorkerのURL、またはEMQX APIへのfetch処理を記述します。
-        // 現在の構成では alert での確認用としています。
-        console.log("点滅コマンド送信準備...");
-        // Worker経由のAPI呼び出し例:
-        // fetch('/publish-endpoint').then(...)
-        alert("点滅命令を送信しました！");
-    }
+    // ★ ここをご自身の Cloudflare Worker の URL に書き換えてください
+    const WORKER_URL = "https://あなたのワーカー名.workers.dev";
+
+
+
+    async function blinkLED() {
+    const btn = document.getElementById('blink-btn');
+    const msg = document.getElementById('status-msg');
+    
+    // 1. WorkerのURL（末尾に /send をつける）
+    // 例: https://project-pico.taaa.workers.dev/send
+    const TARGET_URL = "https://あなたのワーカー名.workers.dev/send";
+
+    btn.disabled = true;
+    msg.innerText = "送信中...";
+
+    try {
+        // 2. Workerへリクエストを飛ばす
+        const response = await fetch(TARGET_URL);
+        
+        if (response.ok) {
+            msg.innerText = "点滅命令を送信しました！";
+            msg.style.color = "#27ae60";
+        } else {
+            msg.innerText = "エラー: 応答がありません";
+            msg.style.color = "#e74c3c";
+               }
+        } catch (error) {
+             msg.innerText = "エラー: Workerに接続できません";
+             msg.style.color = "#e74c3c";
+       } finally {
+            // 3. 3秒後に表示をリセット
+             setTimeout(() => {
+                btn.disabled = false;
+                msg.innerText = "";
+                              }, 3000);
+                 }
+       }
+
+
+
+
     </script>
 </body>
 </html>
