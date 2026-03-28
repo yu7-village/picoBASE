@@ -28,7 +28,12 @@
 
         <hr>
         
-        <button class="btn" onclick="blinkLED()">LEDを点滅させる</button>
+        <button id="blink-btn" class="btn" onclick="blinkLED()">LEDを点滅させる</button>
+
+        <div id="status-msg" style="margin-top:10px; font-size:0.9rem;"></div>
+
+
+
         <p><small>※EMQX API経由でコマンドを送信します</small></p>
     </div>
 
@@ -41,6 +46,10 @@
     async function blinkLED() {
     const btn = document.getElementById('blink-btn');
     const msg = document.getElementById('status-msg');
+
+
+    if (!btn) return; // ボタンが見つからない場合の保険
+
     
     // 1. WorkerのURL（末尾に /send をつける）
     // 例: https://project-pico.taaa.workers.dev/send
